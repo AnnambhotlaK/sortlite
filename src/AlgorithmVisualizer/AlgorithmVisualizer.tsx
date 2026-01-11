@@ -1,5 +1,6 @@
 import React from "react";
 import * as sortingAlgorithms from '../sortingAlgorithms/sortingAlgorithms';
+import type { Animation } from '../interfaces/Animation';
 import './AlgorithmVisualizer.css';
 
 // Define component interface
@@ -46,19 +47,28 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
     }
 
     mergeSort() {
-        const animations: { comparison: number[], swap: number[] }[] = sortingAlgorithms.mergeSort(this.state.array);
-        for (let i = 0; i < animations.length; i++) {
-            const {comparison, swap} = animations[i];
-            setTimeout(() => {
-                const arrayBars = document.getElementsByClassName('array-bar');
-                arrayBars[comparison[1]].style.backgroundColor = 'red';
-                arrayBars[comparison[0]].style.backgroundColor = 'red';
+        const animations: (number[] | Animation[]) = sortingAlgorithms.mergeSort(this.state.array);
+        // if animations stores numbers -> array is sorted, return now
+        if (typeof animations[0] === 'number') {
+            return;
+        }
+        else {
+            const animationArray = animations as Animation[];
+            for (let i = 0; i < animationArray.length; i++) {
+                // get animation from array
+                const animation = animationArray[i];
+                const comparison = animation.comparison;
+                // convert to HTML elements and set styles for sorting
                 setTimeout(() => {
-                    arrayBars[comparison[1]].style.backgroundColor = 'pink';
-                    arrayBars[comparison[0]].style.backgroundColor = 'pink';
-                }, (i + 1) * 10);
-            }, i * 10);
-
+                    const arrayBars = document.getElementsByClassName('array-bar');
+                    (arrayBars[comparison[1]] as HTMLElement).style.backgroundColor = 'red';
+                    (arrayBars[comparison[0]] as HTMLElement).style.backgroundColor = 'red';
+                    setTimeout(() => {
+                        (arrayBars[comparison[1]] as HTMLElement).style.backgroundColor = 'pink';
+                        (arrayBars[comparison[0]] as HTMLElement).style.backgroundColor = 'pink';
+                    }, (i + 1) * 10);
+                }, i * 10);
+            }
         }
     }
 

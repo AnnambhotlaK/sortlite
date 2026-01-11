@@ -1,11 +1,11 @@
 /* Stores various array sorting algorithms for the visualizer */
-
+import type { Animation } from '../interfaces/Animation';
 /**
  * Merge Sort implementation specially designed for animation.
  * @param array array of values to sort
  */
-export function mergeSort(array: number[]): { comparison: number[], swap: number[] }[] | number[] {
-    const animations: { comparison: number[], swap: number[] }[] = [];
+export function mergeSort(array: number[]): Animation[] | number[] {
+    const animations: Animation[] = [];
     // array too short -> already sorted
     if (array.length <= 1) {
         return array;
@@ -21,7 +21,7 @@ function mergeSortHelper(
     startIdx: number,
     endIdx: number,
     auxArray: number[],
-    animations: { comparison: number[], swap: number[] }[]
+    animations: Animation[]
 ) {
     // Nothing to sort -> return
     if (startIdx === endIdx) return;
@@ -39,7 +39,7 @@ function doMerge(
     middleIdx: number,
     endIdx: number,
     auxArray: number[],
-    animations: { comparison: number[], swap: number[] }[]
+    animations: Animation[]
 ) {
     let k: number = startIdx;
     let i: number = startIdx;
@@ -47,7 +47,7 @@ function doMerge(
 
     // animate swaps
     while (i <= middleIdx && j <= endIdx) {
-        const animation = {comparison: [-1, -1], swap: [-1, -1]};
+        const animation: Animation = {comparison: [-1, -1], swap: [-1, -1]};
         animation.comparison = [i, j];
         if (auxArray[i] <= auxArray[j]) {
             animation.swap = [k, i];

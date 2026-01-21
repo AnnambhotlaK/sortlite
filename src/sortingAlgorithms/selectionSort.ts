@@ -30,8 +30,10 @@ export function selectionSort(array: number[]): number[][] {
         // outside loop, swap values at i and min_idx
         // should always animate correctly, even if min_idx is same as i
 
+        // push two height change animations.
+        // this simulates actually swapping the bars.
         animations.push([2, i, array[min_idx]]);
-        animations.push([3, min_idx, array[i]]);
+        animations.push([2, min_idx, array[i]]);
 
         let temp_i = array[i];
         let temp_min_idx = array[min_idx];
@@ -40,19 +42,7 @@ export function selectionSort(array: number[]): number[][] {
         array[i] = temp_min_idx;
         array[min_idx] = temp_i;
 
-        // push two height change animations.
-        // this simulates actually swapping the bars.
-        //animations.push([2, i, temp_min_idx]);
-        //animations.push([3, min_idx, temp_i]);
-
     }
 
     return animations;
 }
-
-// How to animate?
-// Looping over array in j loop -> add two comparisons of min_idx with j for color and uncolor
-// Then, after settling on min_idx -> animate the swap
-// How to know when we happen upon the swap? 
-// use id values for each type of animation
-// first comp = 0, second comp = 1, first swap = 2, second swap = 3

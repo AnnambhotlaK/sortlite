@@ -1,6 +1,7 @@
 import React from "react";
-import { mergeSort } from '../sortingAlgorithms/mergeSort';
+import { bubbleSort } from '../sortingAlgorithms/bubbleSort';
 import { selectionSort } from '../sortingAlgorithms/selectionSort';
+import { mergeSort } from '../sortingAlgorithms/mergeSort';
 import { quickSort } from '../sortingAlgorithms/quickSort';
 import { heapSort } from '../sortingAlgorithms/heapSort';
 import './AlgorithmVisualizer.css';
@@ -50,6 +51,41 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
     /* ALGORITHMS */
 
+    bubbleSort() {
+        const animations: number[][] = bubbleSort(this.state.array);
+        // animations is empty -> array is sorted, return
+        if (animations.length === 0) {
+            return;
+        }
+        // otherwise -> visualize each comparison and swap
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            // at comparison (id 0 or id 1) -> animate the comparison coloring
+            if (animations[i][0] === 0 || animations[i][0] === 1) {
+                const [animationId, barOneIdx, barTwoIdx] = animations[i] as number[];
+                const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
+                const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
+                // first comparison (animation id is 0) -> set color to red
+                // second comparison (animation id is 1) -> set color to pink
+                const color: string = animationId === 0 ? 'red' : 'pink';
+                const id = setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                }, i * ANIMATION_SPEED_MS);
+                activeTimeouts.add(id);
+            }
+            // at a swap (id 2) -> animate the swap
+            else {
+                const id = setTimeout(() => {
+                    const [animationId, barOneIdx, newHeight] = animations[i] as number[];
+                    const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
+                    barOneStyle.height = `${newHeight}px`;
+                }, i * ANIMATION_SPEED_MS);
+                activeTimeouts.add(id);
+            }
+        }
+    }
+
     selectionSort() {
         const animations: number[][] = selectionSort(this.state.array);
         // animations is empty -> array is sorted, return
@@ -73,7 +109,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
                 }, i * ANIMATION_SPEED_MS);
                 activeTimeouts.add(id);
             }
-            // at a swap (id 1 or 2) -> animate the swap
+            // at a swap (id 2) -> animate the swap
             else {
                 const id = setTimeout(() => {
                     const [animationId, barOneIdx, newHeight] = animations[i] as number[];
@@ -84,6 +120,8 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
             }
         }
     }
+
+    
 
     quickSort() {
         const animations: number[][] = quickSort(this.state.array);
@@ -159,6 +197,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
                 {/* Generate New Array Button*/}
                 <button onClick={() => this.resetArray()}>Generate New Array</button>
                 {/* Algorithm Sort Buttons */}
+                <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
                 <button onClick={() => this.selectionSort()}>Selection Sort</button>
                 <button onClick={() => this.quickSort()}>Quick Sort</button>
                 <button onClick={() => this.mergeSort()}>Merge Sort</button>

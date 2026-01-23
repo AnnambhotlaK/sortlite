@@ -44,31 +44,31 @@ function doMerge(
     let j: number = middleIdx + 1;
 
     while (i <= middleIdx && j <= endIdx) {
-        animations.push([i, j]); // push comparison to change color
-        animations.push([i, j]); // push comparison to revert color
+        animations.push([0, i, j]); // push comparison to change color
+        animations.push([1, i, j]); // push comparison to revert color
         if (auxArray[i] <= auxArray[j]) {
-            animations.push([k, auxArray[i]]); // push swap to overwrite height values
+            animations.push([2, k, auxArray[i]]); // push swap to overwrite height values
             mainArray[k++] = auxArray[i++];
         }
         else {
-            animations.push([k, auxArray[j]]);
+            animations.push([2, k, auxArray[j]]);
             mainArray[k++] = auxArray[j++];
         }
     }
 
     // animate swaps for values less than middleIdx
     while (i <= middleIdx) {
-        animations.push([i, i]);
-        animations.push([i, i]);
-        animations.push([k, auxArray[i]]);
+        animations.push([0, i, i]);
+        animations.push([1, i, i]);
+        animations.push([2, k, auxArray[i]]);
         mainArray[k++] = auxArray[i++];
     }
 
     // animate swaps for values less than endIdx
     while (j <= endIdx) {
-        animations.push([j, j]);
-        animations.push([j, j]);
-        animations.push([k, auxArray[j]]);
+        animations.push([0, j, j]);
+        animations.push([1, j, j]);
+        animations.push([2, k, auxArray[j]]);
         mainArray[k++] = auxArray[j++];
     }
 }

@@ -10,7 +10,7 @@ import './AlgorithmVisualizer.css';
 // This affects animation speed.
 const ANIMATION_SPEED_MS = 3;
 
-// This affects the number of bars in the array
+// This affects the number of bars in the array.
 const NUMBER_OF_ARRAY_BARS = 300;
 
 // Stores active timeouts, or currently animating sorting processes.
@@ -54,117 +54,43 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
     bubbleSort() {
         const animations: number[][] = bubbleSort(this.state.array);
-        // animations is empty -> array is sorted, return
-        if (animations.length === 0) {
-            return;
-        }
-        // otherwise -> visualize each comparison and swap
-        for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
-            // at comparison (id 0 or id 1) -> animate the comparison coloring
-            if (animations[i][0] === 0 || animations[i][0] === 1) {
-                const [animationId, barOneIdx, barTwoIdx] = animations[i] as number[];
-                const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-                const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
-                // first comparison (animation id is 0) -> set color to red
-                // second comparison (animation id is 1) -> set color to pink
-                const color: string = animationId === 0 ? 'red' : 'pink';
-                const id = setTimeout(() => {
-                    barOneStyle.backgroundColor = color;
-                    barTwoStyle.backgroundColor = color;
-                }, i * ANIMATION_SPEED_MS);
-                activeTimeouts.add(id);
-            }
-            // at a swap (id 2) -> animate the swap
-            else {
-                const id = setTimeout(() => {
-                    const [animationId, barOneIdx, newHeight] = animations[i] as number[];
-                    const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-                    barOneStyle.height = `${newHeight}px`;
-                }, i * ANIMATION_SPEED_MS);
-                activeTimeouts.add(id);
-            }
-        }
+        this.visualizeSorting(animations);
     }
 
     selectionSort() {
         const animations: number[][] = selectionSort(this.state.array);
-        // animations is empty -> array is sorted, return
-        if (animations.length === 0) {
-            return;
-        }
-        // otherwise -> visualize each comparison and swap
-        for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
-            // at comparison (id 0 or id 1) -> animate the comparison coloring
-            if (animations[i][0] === 0 || animations[i][0] === 1) {
-                const [animationId, barOneIdx, barTwoIdx] = animations[i] as number[];
-                const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-                const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
-                // first comparison (animation id is 0) -> set color to red
-                // second comparison (animation id is 1) -> set color to pink
-                const color: string = animationId === 0 ? 'red' : 'pink';
-                const id = setTimeout(() => {
-                    barOneStyle.backgroundColor = color;
-                    barTwoStyle.backgroundColor = color;
-                }, i * ANIMATION_SPEED_MS);
-                activeTimeouts.add(id);
-            }
-            // at a swap (id 2) -> animate the swap
-            else {
-                const id = setTimeout(() => {
-                    const [animationId, barOneIdx, newHeight] = animations[i] as number[];
-                    const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-                    barOneStyle.height = `${newHeight}px`;
-                }, i * ANIMATION_SPEED_MS);
-                activeTimeouts.add(id);
-            }
-        }
+        this.visualizeSorting(animations);
     }
 
     insertionSort() {
         const animations: number[][] = insertionSort(this.state.array);
-        // animations is empty -> array is sorted, return
-        if (animations.length === 0) {
-            return;
-        }
-        // otherwise -> visualize each comparison and swap
-        for (let i = 0; i < animations.length; i++) {
-            const arrayBars = document.getElementsByClassName('array-bar');
-            // at comparison (id 0 or id 1) -> animate the comparison coloring
-            if (animations[i][0] === 0 || animations[i][0] === 1) {
-                const [animationId, barOneIdx, barTwoIdx] = animations[i] as number[];
-                const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-                const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
-                // first comparison (animation id is 0) -> set color to red
-                // second comparison (animation id is 1) -> set color to pink
-                const color: string = animationId === 0 ? 'red' : 'pink';
-                const id = setTimeout(() => {
-                    barOneStyle.backgroundColor = color;
-                    barTwoStyle.backgroundColor = color;
-                }, i * ANIMATION_SPEED_MS);
-                activeTimeouts.add(id);
-            }
-            // at a swap (id 2) -> animate the swap
-            else {
-                const id = setTimeout(() => {
-                    const [animationId, barOneIdx, newHeight] = animations[i] as number[];
-                    const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
-                    barOneStyle.height = `${newHeight}px`;
-                }, i * ANIMATION_SPEED_MS);
-                activeTimeouts.add(id);
-            }
-        }
+        this.visualizeSorting(animations);
     }
-
-    
 
     quickSort() {
         const animations: number[][] = quickSort(this.state.array);
+        this.visualizeSorting(animations);
     }
 
     mergeSort() {
         const animations: number[][] = mergeSort(this.state.array);
+        this.visualizeSorting(animations);
+    }
+
+    heapSort() {
+        const animations: number[][] = heapSort(this.state.array);
+        this.visualizeSorting(animations);
+    }
+
+    /**
+     * Generic algorithm to visualize sorting algorithms.
+     * Uses 2D animation array, where animations are integer arrays.
+     * animations[i][0] represents the animationId, corresponding to:
+     * a coloring comparison, uncoloring comparison, or a swap of bars.
+     * @param animations 
+     * @returns none 
+     */
+    visualizeSorting(animations: number[][]) {
         // animations is empty -> array is sorted, return
         if (animations.length === 0) {
             return;
@@ -174,13 +100,13 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
             const arrayBars = document.getElementsByClassName('array-bar');
             // i is a color change if we are on either of the comparisons (but never on a swap, since it's on indices 1 less than mult. of 3)
             const isColorChange: boolean = (i % 3 !== 2);
-            if (isColorChange) {
-                const [barOneIdx, barTwoIdx] = animations[i] as number[];
+            if (animations[i][0] === 0 || animations[i][0] === 1) {
+                const [animationId, barOneIdx, barTwoIdx] = animations[i] as number[];
                 const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
                 const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
-                // first comparison (i%3 === 0) -> set color to red
-                // second comparison (i%3 !== 1) -> set color to pink
-                const color: string = i % 3 === 0 ? 'red' : 'pink';
+                // first comparison (animation id is 0) -> set color to red
+                // second comparison (animation id is 1) -> set color to pink
+                const color: string = animationId === 0 ? 'red' : 'pink';
                 const id = setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
@@ -190,17 +116,13 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
             // not on color change -> on swap, so swap bars by swapping the heights.
             else {
                 const id = setTimeout(() => {
-                    const [barOneIdx, newHeight] = animations[i] as number[];
+                    const [animatinoId, barOneIdx, newHeight] = animations[i] as number[];
                     const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
                     barOneStyle.height = `${newHeight}px`;
                 }, i * ANIMATION_SPEED_MS);
                 activeTimeouts.add(id);
             }
         }
-    }
-
-    heapSort() {
-        const animations: number[][] = heapSort(this.state.array);
     }
 
     // Immediately halt all sorting algorithms taking place

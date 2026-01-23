@@ -15,23 +15,31 @@ export function insertionSort(array: number[]): number[][] {
         let j = i;
 
         // push comparison of j and j - 1
+        // firstSwap indicates that we are making the first swap
+        let firstSwap = true;
         animations.push([0, j, j - 1]);
         animations.push([1, j, j - 1]);
 
         // j not at start and a[j] less than its previous -> swap with previous
         while (j > 0 && array[j] < array[j - 1]) {
 
-            // push comparison of j and j - 1
-            animations.push([0, j, j - 1]);
-            animations.push([1, j, j - 1]);
+            // push comparison of j and j - 1 (only if not the first swap)
+            if (!firstSwap) {
+                animations.push([0, j, j - 1]);
+                animations.push([1, j, j - 1]);
+            }
+
+            // reset firstSwap to false
+            firstSwap = false;
 
             // push swaps
             animations.push([2, j, array[j - 1]]);
             animations.push([2, j - 1, array[j]]);
 
+            // swap underlying values
             let temp = array[j];
             array[j] = array[j - 1];
-            array[j - 1] = array[j];
+            array[j - 1] = temp;
             j--;
         }
 

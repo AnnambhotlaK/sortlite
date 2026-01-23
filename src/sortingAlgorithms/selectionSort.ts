@@ -35,11 +35,9 @@ export function selectionSort(array: number[]): number[][] {
         animations.push([2, i, array[min_idx]]);
         animations.push([2, min_idx, array[i]]);
 
-        let temp_i = array[i];
-        let temp_min_idx = array[min_idx];
-
         // swap underlying values
-        array[i] = temp_min_idx;
+        let temp_i = array[i];
+        array[i] = array[min_idx];
         array[min_idx] = temp_i;
 
     }

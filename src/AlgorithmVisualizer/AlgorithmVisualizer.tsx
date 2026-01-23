@@ -98,11 +98,10 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
         // otherwise -> visualize each comparison and swap
         for (let i = 0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
-            // i is a color change if we are on either of the comparisons (but never on a swap, since it's on indices 1 less than mult. of 3)
-            const isColorChange: boolean = (i % 3 !== 2);
             if (animations[i][0] === 0 || animations[i][0] === 1) {
                 const [animationId, barOneIdx, barTwoIdx] = animations[i] as number[];
                 const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
+                console.log(barTwoIdx);
                 const barTwoStyle = (arrayBars[barTwoIdx] as HTMLElement).style;
                 // first comparison (animation id is 0) -> set color to red
                 // second comparison (animation id is 1) -> set color to pink

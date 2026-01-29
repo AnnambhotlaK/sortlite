@@ -6,11 +6,10 @@ import { mergeSort } from '../sortingAlgorithms/mergeSort';
 import { quickSort } from '../sortingAlgorithms/quickSort';
 import './AlgorithmVisualizer.css';
 
+import ArrayBarSlider from '../components/ArrayBarSlider';
+
 // This affects animation speed.
 const ANIMATION_SPEED_MS = 3;
-
-// This affects the number of bars in the array.
-const NUMBER_OF_ARRAY_BARS = 300;
 
 // This affects the maximum value of a bar in the array.
 const MAX_ARRAY_VALUE = 400;
@@ -23,6 +22,8 @@ const activeTimeouts = new Set<number>();
 interface AlgorithmVisualizerState {
     // Visualizer requires current state of the array of data
     array: number[];
+    // Number of bars to display in the visualizer
+    numberOfBars: number;
 }
 
 // Define the AlgorithmVisualizer component
@@ -33,6 +34,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
         super(props);
         this.state = {
             array: [],
+            numberOfBars: 300,
         };
     }
 
@@ -46,10 +48,17 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
     resetArray() {
         const array: number[] = [];
         // Fill array with random values from 5 to 500
-        for (let i: number = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+        for (let i: number = 0; i < this.state.numberOfBars; i++) {
             array.push(randomIntFromInterval(5, MAX_ARRAY_VALUE));
         }
         this.setState({array: array});
+    }
+
+    // Update state of array bars upon changing number of bars
+    handleNumberOfBarsChange = (newValue: number) => {
+        this.setState({ numberOfBars: newValue }, () => {
+            this.resetArray();
+        });
     }
 
     /* ALGORITHMS START */
@@ -133,11 +142,15 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
     // Render visualizer component
     render() {
-        // fetch array from this.state
-        const {array} = this.state;
+        // fetch array and numberOfBars from this.state
+        const {array, numberOfBars} = this.state;
 
         return (
             <div className="visualizer-container">
+
+                <div className="array-bar-slider">
+                    <ArrayBarSlider value={numberOfBars} onChange={this.handleNumberOfBarsChange}></ArrayBarSlider>
+                </div>
 
                 <div className="visualizer-title-container">
                     <h1>Sorting Algorithm Visualizer</h1>

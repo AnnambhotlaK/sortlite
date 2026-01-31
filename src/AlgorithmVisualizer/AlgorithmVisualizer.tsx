@@ -7,9 +7,7 @@ import { quickSort } from '../sortingAlgorithms/quickSort';
 import './AlgorithmVisualizer.css';
 
 import ArrayBarSlider from '../components/ArrayBarSlider';
-
-// This affects animation speed.
-const ANIMATION_SPEED_MS = 3;
+import AnimationSpeedSlider from '../components/AnimationSpeedSlider';
 
 // This affects the maximum value of a bar in the array.
 const MAX_ARRAY_VALUE = 400;
@@ -24,6 +22,8 @@ interface AlgorithmVisualizerState {
     array: number[];
     // Number of bars to display in the visualizer
     numberOfBars: number;
+    // Animation speed of bar swaps in milliseconds
+    animationSpeed: number;
 }
 
 // Define the AlgorithmVisualizer component
@@ -35,6 +35,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
         this.state = {
             array: [],
             numberOfBars: 300,
+            animationSpeed: 3,
         };
     }
 
@@ -57,6 +58,13 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
     // Update state of array bars upon changing number of bars
     handleNumberOfBarsChange = (newValue: number) => {
         this.setState({ numberOfBars: newValue }, () => {
+            this.resetArray();
+        });
+    }
+
+    // Update animation speed upon changing speed slider
+    handleAnimationSpeedChange = (newValue: number) => {
+        this.setState({ animationSpeed: newValue }, () => {
             this.resetArray();
         });
     }
@@ -99,6 +107,8 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
      * @returns none 
      */
     visualizeSorting(animations: number[][]) {
+        // fetch array, numberOfBars, and animationSpeed from this.state
+        const {array, numberOfBars, animationSpeed} = this.state;
         // animations is empty -> array is sorted, return
         if (animations.length === 0) {
             return;
@@ -117,7 +127,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
                 const id = setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
-                }, i * ANIMATION_SPEED_MS);
+                }, i * animationSpeed);
                 activeTimeouts.add(id);
             }
             // not on color change -> on swap, so swap bars by swapping the heights.
@@ -126,7 +136,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
                     const [animatinoId, barOneIdx, newHeight] = animations[i] as number[];
                     const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
                     barOneStyle.height = `${newHeight}px`;
-                }, i * ANIMATION_SPEED_MS);
+                }, i * animationSpeed);
                 activeTimeouts.add(id);
             }
         }
@@ -142,14 +152,20 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
     // Render visualizer component
     render() {
-        // fetch array and numberOfBars from this.state
-        const {array, numberOfBars} = this.state;
+        // fetch array, numberOfBars, and animationSpeed from this.state
+        const {array, numberOfBars, animationSpeed} = this.state;
 
         return (
             <div className="visualizer-container">
 
+                {/* Change number of bars in the array */}
                 <div className="array-bar-slider">
                     <ArrayBarSlider value={numberOfBars} onChange={this.handleNumberOfBarsChange}></ArrayBarSlider>
+                </div>
+
+                {/* Change speed of bar animations */}
+                <div className="animation-speed-slider">
+                    <AnimationSpeedSlider value={animationSpeed} onChange={this.handleAnimationSpeedChange}></AnimationSpeedSlider>
                 </div>
 
                 <div className="visualizer-title-container">

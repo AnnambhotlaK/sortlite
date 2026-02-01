@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from '@mui/material/Slider';
+import './AnimationSpeedSlider.css';
 
 interface AnimationSpeedSliderProps {
   value: number;
@@ -14,16 +15,23 @@ const AnimationSpeedSlider: React.FC<AnimationSpeedSliderProps> = ({ value, onCh
   };
 
   return (
-    <div style={{ width: 300, margin: 'auto' }}>
-      <Slider
-        value={value}
-        onChange={handleChange}
-        step={1} // The granularity for the steps
-        marks // Generates a mark for each step
-        min={1}
-        max={10}
-        valueLabelDisplay="auto" // Shows the value label on drag or focus
-      />
+    <div className="animation-speed-container">
+      <label className="speed-slider-title">Animation Speed</label>
+      <div className="slider-wrapper">
+        <span className="speed-label slow">Fast</span>
+        <div className="slider-track">
+          <Slider
+            value={value}
+            onChange={handleChange}
+            step={1}
+            marks = {false}
+            min={1}
+            max={10}
+            valueLabelDisplay="auto"
+          />
+        </div>
+        <span className="speed-label fast">Slow</span>
+      </div>
     </div>
   );
 };

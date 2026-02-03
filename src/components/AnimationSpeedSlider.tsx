@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from '@mui/material/Slider';
-import './AnimationSpeedSlider.css';
+import './Slider.css';
 
 interface AnimationSpeedSliderProps {
   value: number;

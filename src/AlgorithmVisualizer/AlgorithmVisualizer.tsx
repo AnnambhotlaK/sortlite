@@ -158,15 +158,6 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
         return (
             <div className="visualizer-container">
 
-                {/* Change number of bars in the array */}
-                <div className="array-bar-slider">
-                    <ArrayBarSlider value={numberOfBars} onChange={this.handleNumberOfBarsChange}></ArrayBarSlider>
-                </div>
-
-                {/* Change speed of bar animations */}
-                <div className="animation-speed-slider">
-                    <AnimationSpeedSlider value={animationSpeed} onChange={this.handleAnimationSpeedChange}></AnimationSpeedSlider>
-                </div>
 
                 <div className="visualizer-title-container">
                     <h1>Sorting Algorithm Visualizer</h1>
@@ -201,6 +192,19 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
                     {/* Stop Animations Button */}
                     <button onClick={() => this.stopAnimations()}>Stop Animations</button>
+                </div>
+
+                {/* Sliders container - side by side */}
+                <div className="sliders-container">
+                    {/* Change number of bars in the array */}
+                    <div className="array-bar-slider">
+                        <ArrayBarSlider value={numberOfBars} onChange={this.handleNumberOfBarsChange}></ArrayBarSlider>
+                    </div>
+
+                    {/* Change speed of bar animations */}
+                    <div className="animation-speed-slider">
+                        <AnimationSpeedSlider value={animationSpeed} onChange={this.handleAnimationSpeedChange}></AnimationSpeedSlider>
+                    </div>
                 </div>
                 
 

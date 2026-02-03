@@ -19,13 +19,22 @@
 }
 
 .visualizer-title-container h1 {
+    font-size: 40px;
+    font-weight: 700;
     margin: 0;
     padding: 0;
 }
 
 .visualizer-title-container p {
-    margin: 10px 0 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 5px 0 10px 0;
     padding: 0;
+}
+
+.visualizer-title-container a {
+    font-weight: 500;
+    text-decoration: underline;
 }
 
 .array-bars-container {
@@ -50,10 +59,27 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    padding: 10px 0 0px 0;
 }
 
 .button-container button {
     margin: 5px;
     color: white;
     border: pink 2px solid;
+}
+
+.sliders-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+}
+
+.array-bar-slider,
+.animation-speed-slider {
+    flex: 1;
+    max-width: 300px;
 }

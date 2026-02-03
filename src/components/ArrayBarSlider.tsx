@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from '@mui/material/Slider';
+import './Slider.css';
 
 interface ArrayBarSliderProps {
   value: number;
@@ -14,18 +15,26 @@ const ArrayBarSlider: React.FC<ArrayBarSliderProps> = ({ value, onChange }) => {
   };
 
   return (
-    <div style={{ width: 300, margin: 'auto' }}>
-      <Slider
-        value={value}
-        onChange={handleChange}
-        step={20} // The granularity for the steps
-        marks // Generates a mark for each step
-        min={20}
-        max={300}
-        valueLabelDisplay="auto" // Shows the value label on drag or focus
-      />
+    <div className="animation-speed-container">
+      <label className="speed-slider-title">Array Size</label>
+      <div className="slider-wrapper">
+        <span className="speed-label slow">Small</span>
+        <div className="slider-track">
+          <Slider
+            value={value}
+            onChange={handleChange}
+            step={20}
+            marks = {false}
+            min={20}
+            max={300}
+            valueLabelDisplay="auto"
+          />
+        </div>
+        <span className="speed-label fast">Large</span>
+      </div>
     </div>
   );
+
 };
 
 export default ArrayBarSlider;

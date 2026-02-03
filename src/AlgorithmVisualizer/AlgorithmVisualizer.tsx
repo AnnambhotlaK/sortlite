@@ -104,7 +104,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
      * animations[i][0] represents the animationId, corresponding to:
      * a coloring comparison, uncoloring comparison, or a swap of bars.
      * @param animations 
-     * @returns none 
+     * @returns none
      */
     visualizeSorting(animations: number[][]) {
         // fetch array, numberOfBars, and animationSpeed from this.state
@@ -133,7 +133,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
             // not on color change -> on swap, so swap bars by swapping the heights.
             else {
                 const id = setTimeout(() => {
-                    const [animatinoId, barOneIdx, newHeight] = animations[i] as number[];
+                    const [animationId, barOneIdx, newHeight] = animations[i] as number[];
                     const barOneStyle = (arrayBars[barOneIdx] as HTMLElement).style;
                     barOneStyle.height = `${newHeight}px`;
                 }, i * animationSpeed);
@@ -192,6 +192,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
                     {/* Stop Animations Button */}
                     <button onClick={() => this.stopAnimations()}>Stop Animations</button>
+
                 </div>
 
                 {/* Sliders container - side by side */}

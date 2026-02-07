@@ -160,7 +160,7 @@ export default class AlgorithmVisualizer extends React.Component<{}, AlgorithmVi
 
 
                 <div className="visualizer-title-container">
-                    <h1>Sorting Algorithm Visualizer</h1>
+                    <h1><span style={{color: 'wheat'}}>SortLite</span> - a simple sorting visualizer</h1>
                     <p>by <a target="_blank" rel="noopener noreferrer" href="https://github.com/AnnambhotlaK">Kishore Annambhotla</a></p>
                 </div>
                 

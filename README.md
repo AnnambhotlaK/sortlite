@@ -1,3 +1,5 @@
+![](sortlite_demo.gif)
+
 # SortLite
 
 A sorting algorithm visualizer written in TypeScript and powered by React.
